@@ -116,8 +116,8 @@ std::string http_post(const std::string& api_key, const std::string& body) {
     const BOOL sent = WinHttpSendRequest(
         request,
         headers.c_str(),
-        static_cast<DWORD>(headers.size()),
-        const_cast<char*>(body.data()),
+        static_ast<DWORD>(headers.size()),
+        const_cast<char>(body.data()),
         static_cast<DWORD>(body.size()),
         static_cast<DWORD>(body.size()),
         0);
@@ -152,7 +152,6 @@ std::string http_post(const std::string& api_key, const std::string& body) {
     WinHttpCloseHandle(request);
     WinHttpCloseHandle(connection);
     WinHttpCloseHandle(session);
-
     if (status < 200 || status >= 300) {
         throw std::runtime_error(
             "OpenAI API returned HTTP " + std::to_string(status) + ": " + response);
@@ -298,27 +297,6 @@ ApiResponse OpenAIClient::respond(const std::vector<std::string>& input_items) {
     result.output_text = extract_string_field(result.raw_json, "output_text");
     result.output_items = split_json_array(extract_array_field(result.raw_json, "output"));
     result.compacted = has_compaction_type(result.output_items);
-    return result;
-}
-
-SimulationClient::SimulationClient(std::size_t compaction_every_turns)
-    : compaction_every_turns_(std::max<std::size_t>(1, compaction_every_turns)) {}
-
-ApiResponse SimulationClient::respond(const std::vector<std::string>& input_items) {
-    ++turn_count_;
-    const bool compacted = (turn_count_ % compaction_every_turns_) == 0;
-
-    ApiResponse result;
-    result.output_text =
-        "[FrogContexto simulation] Response " + std::to_string(turn_count_) +
-        " received. Input items: " + std::to_string(input_items.size()) +
-        (compacted ? ". Simulated compaction occurred." : ".");
-    result.output_items.push_back(make_message_item("assistant", result.output_text));
-    if (compacted) {
-        result.output_items.push_back(
-            "{\"type\":\"compaction\",\"encrypted_content\":\"simulation\"}");
-        result.compacted = true;
-    }
     return result;
 }
 
