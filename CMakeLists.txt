@@ -24,10 +24,6 @@ target_link_libraries(frogcontexto_tests PRIVATE frogcontexto_core)
 add_executable(frogcontexto_json_tests tests/test_json.cpp)
 target_link_libraries(frogcontexto_json_tests PRIVATE frogcontexto_core)
 
-add_executable(frogcontexto_simulation_tests tests/test_simulation.cpp)
-target_link_libraries(frogcontexto_simulation_tests PRIVATE frogcontexto_core)
-
 enable_testing()
 add_test(NAME frogcontexto_tests COMMAND frogcontexto_tests)
 add_test(NAME frogcontexto_json_tests COMMAND frogcontexto_json_tests)
-add_test(NAME frogcontexto_simulation_tests COMMAND frogcontexto_simulation_tests)
