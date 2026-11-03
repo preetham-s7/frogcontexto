@@ -15,10 +15,8 @@ void print_usage() {
               << "  frogcontexto reconcile <checkpoint.md> <current.md>\n"
               << "  frogcontexto inspect <context.md>\n"
               << "  frogcontexto run <workspace>\n\n"
-              << "  frogcontexto simulate <workspace>\n\n"
               << "run requires OPENAI_API_KEY. Optional: FROGCONTEXTO_MODEL and "
-                 "FROGCONTEXTO_COMPACT_THRESHOLD. simulate requires no key and "
-                 "compacts every third turn.\n";
+                 "FROGCONTEXTO_COMPACT_THRESHOLD.\n";
 }
 
 std::size_t environment_size(const char* name, std::size_t fallback) {
@@ -84,26 +82,6 @@ int main(int argc, char* argv[]) {
 
             frogcontexto::AgentRuntime runtime(argv[2], config);
             std::cout << "FrogContexto agent ready. Type 'exit' to stop.\n";
-            std::string message;
-            while (std::cout << "> " && std::getline(std::cin, message)) {
-                if (message == "exit" || message == "quit") break;
-                if (message.empty()) continue;
-                std::cout << runtime.send_user_message(message) << "\n";
-            }
-            return 0;
-        }
-
-        if (command == "simulate" && argc == 3) {
-            frogcontexto::ApiConfig config;
-            config.model = "simulation-model";
-            config.compact_threshold = environment_size(
-                "FROGCONTEXTO_COMPACT_THRESHOLD", config.compact_threshold);
-            auto provider = std::make_unique<frogcontexto::SimulationClient>(3);
-            frogcontexto::AgentRuntime runtime(
-                argv[2], config, std::move(provider));
-
-            std::cout << "FrogContexto simulation ready. No API key is used.\n"
-                      << "Compaction is simulated every third message. Type 'exit' to stop.\n";
             std::string message;
             while (std::cout << "> " && std::getline(std::cin, message)) {
                 if (message == "exit" || message == "quit") break;
