@@ -116,8 +116,8 @@ std::string http_post(const std::string& api_key, const std::string& body) {
     const BOOL sent = WinHttpSendRequest(
         request,
         headers.c_str(),
-        static_ast<DWORD>(headers.size()),
-        const_cast<char>(body.data()),
+        static_cast<DWORD>(headers.size()),
+        const_cast<char*>(body.data()),
         static_cast<DWORD>(body.size()),
         static_cast<DWORD>(body.size()),
         0);
