@@ -36,17 +36,6 @@ private:
     ApiConfig config_;
 };
 
-class SimulationClient final : public ResponseProvider {
-public:
-    explicit SimulationClient(std::size_t compaction_every_turns = 3);
-
-    ApiResponse respond(const std::vector<std::string>& input_items) override;
-
-private:
-    std::size_t compaction_every_turns_;
-    std::size_t turn_count_ = 0;
-};
-
 std::string json_escape(const std::string& value);
 std::string make_message_item(const std::string& role, const std::string& content);
 std::string extract_string_field(const std::string& object, const std::string& field);
