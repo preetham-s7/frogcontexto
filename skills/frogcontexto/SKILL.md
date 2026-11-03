@@ -27,14 +27,6 @@ Use this skill for long-running tasks where losing decisions, pending work, or u
 
 ## Runtime mode
 
-For local testing without an API key or network connection, run:
-
-```powershell
-.\frogcontexto.exe simulate .
-```
-
-Simulation mode returns fake responses and deliberately triggers compaction every third message. Use it to verify checkpoint creation and recovery before configuring a real provider.
-
 For an API-backed agent, run:
 
 ```powershell
